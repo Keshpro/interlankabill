@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inter Lanka Cargo - Final Bill</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #004080;
+            --light-blue: #f4f8ff;
+            --border-color: #004080;
+            --text-dark: #222;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 11px; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #555; /* Dark background for viewing */
+            display: flex;
+            justify-content: center;
+        }
+
+        .bill-wrapper {
+            width: 210mm; /* A4 Width */
+            min-height: 297mm; /* A4 Height */
+            background: #fff;
+            padding: 10mm;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Header */
+        .header { display: flex; justify-content: space-between; border-bottom: 3px solid var(--primary-blue); padding-bottom: 10px; margin-bottom: 10px; }
+        .header-left h1 { margin: 0; color: var(--primary-blue); font-size: 24px; text-transform: uppercase; line-height: 1; }
+        .header-left h2 { margin: 2px 0; font-size: 14px; font-family: 'Noto Sans Sinhala', sans-serif; }
+        .header-left h3 { margin: 0; font-size: 12px; font-family: 'Noto Sans Tamil', sans-serif; }
+        .header-center { text-align: center; color: var(--primary-blue); }
+        .logo { font-size: 35px; margin-bottom: 5px; }
+        .header-right { text-align: right; font-size: 10px; line-height: 1.3; }
+
+        /* Title Bar */
+        .title-bar { 
+            background: var(--primary-blue); 
+            color: white; 
+            padding: 6px 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            font-weight: bold; 
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* Shipper / Consignee Boxes */
+        .address-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .box { border: 1px solid var(--primary-blue); border-radius: 4px; overflow: hidden; }
+        .box-header { background: var(--light-blue); padding: 4px 8px; font-weight: bold; border-bottom: 1px solid var(--primary-blue); font-size: 10px; }
+        .box-content { padding: 8px; line-height: 1.6; }
+        .dotted { border-bottom: 1px dotted #888; display: inline-block; width: 10px; flex-grow: 1; }
+        .field-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+        
+        /* Checkboxes Row */
+        .checkbox-row { 
+            border: 1px solid var(--primary-blue); 
+            background: var(--light-blue);
+            padding: 5px 10px; 
+            margin-bottom: 10px; 
+            font-size: 10px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            align-items: center;
+        }
+        .cb-group { display: flex; align-items: center; gap: 10px; border-right: 1px solid #ccc; padding-right: 10px; }
+        .cb-group:last-child { border-right: none; }
+        .cb-item { display: flex; align-items: center; gap: 3px; }
+        .square { width: 10px; height: 10px; border: 1px solid #000; display: inline-block; background: #fff; }
+
+        /* Main Cargo Table */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 0; }
+        th { background: var(--primary-blue); color: white; padding: 6px; border: 1px solid var(--primary-blue); font-size: 10px; }
+        td { border: 1px solid #ccc; padding: 6px; text-align: center; height: 25px; }
+        
+        /* Summary Bar below table */
+        .summary-bar { 
+            display: flex; 
+            border: 1px solid #000; 
+            border-top: none; 
+            margin-bottom: 15px; 
+            background: #f9f9f9;
+        }
+        .sb-item { border-right: 1px solid #000; padding: 5px; flex: 1; display: flex; gap: 5px; align-items: center; font-weight: bold; font-size: 10px; }
+        .sb-item:last-child { border-right: none; background: #ffffcc; }
+        .sb-input { border-bottom: 1px dotted #000; flex-grow: 1; text-align: center; }
+
+        /* Bottom Section Layout */
+        .bottom-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 15px; }
+
+        /* Important Notice */
+        .notice-box { font-size: 9px; text-align: justify; line-height: 1.3; border: 1px solid #ccc; padding: 8px; background: #fff; }
+        .notice-title { color: #d00; font-weight: bold; margin-right: 5px; }
+
+        /* Signatures */
+        .signature-area { margin-top: 15px; }
+        .sig-line { margin-top: 25px; border-top: 1px dashed #000; width: 80%; }
+        
+        /* Charges Table */
+        .charges-table td { text-align: left; padding: 4px 8px; font-size: 10px; }
+        .charges-table .amount-col { border-left: 1px solid #ccc; width: 80px; text-align: right; }
+        .total-row td { background: var(--primary-blue); color: white; font-weight: bold; font-size: 12px; }
+
+        /* Footer */
+        .footer { 
+            margin-top: 20px; 
+            border-top: 2px solid var(--primary-blue); 
+            padding-top: 10px; 
+            text-align: center; 
+            font-size: 9px;
+            color: #444;
+        }
+        .sinhala-disclaimer { font-family: 'Noto Sans Sinhala', sans-serif; font-size: 9px; margin-bottom: 5px; color: #555; }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .bill-wrapper { width: 100%; height: auto; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bill-wrapper">
+
+    <div class="header">
+        <div class="header-left">
+            <h1>INTER LANKA<br>CARGO LLC</h1>
+            <h2>ඉන්ටලංකා කාගෝ</h2>
+            <h3>இன்டர் லங்கா கார்கோ</h3>
+            <div style="font-size: 10px; margin-top: 5px;">
+                <strong>UAE OFFICE:</strong><br>
+                HND Abdulghaffar Guloom Husain, Al Khabeesi, Office No: 03<br>
+                P.O. Box: 135, Dubai, UAE
+            </div>
+        </div>
+        <div class="header-center">
+            <div class="logo"><img src="logo.JPG" alt="Logo" style="width: 40px; height: auto;"></div>
+            <div>DOOR TO DOOR CARGO<br>SERVICES TO SRI LANKA</div>
+            <div style="margin-top: 5px; font-weight: bold; color: #d00;">HOTLINE: 054 578 5585</div>
+        </div>
+        <div class="header-right">
+            <strong>CONTACTS:</strong><br>
+            +971 54 578 5585<br>
+            +971 50 672 9585<br>
+            +971 58 882 6683<br>
+            +971 50 523 1524<br><br>
+            <div style="border: 1px solid #d00; padding: 2px 5px; display: inline-block; color: #d00; font-weight: bold;">
+                OLC NO: ....................
+            </div>
+        </div>
+    </div>
+
+    <div class="title-bar">
+        <span>HOUSE BILL OF LADING</span>
+        <span>Date: <span style="font-weight: normal; color: #fff;">_____ / _____ / 202__</span></span>
+    </div>
+
+    <div class="address-grid">
+        <div class="box">
+            <div class="box-header">SHIPPER (Sender)</div>
+            <div class="box-content">
+                <div class="field-row">Name: <span class="dotted"></span></div>
+                <div class="field-row">Address: <span class="dotted"></span></div>
+                <div class="field-row"><span class="dotted"></span></div>
+                <div class="field-row">Contact No: <span class="dotted"></span></div>
+                <div class="field-row">Passport No: <span class="dotted"></span></div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-header">CONSIGNEE (Receiver)</div>
+            <div class="box-content">
+                <div class="field-row">Name: <span class="dotted"></span></div>
+                <div class="field-row">Address: <span class="dotted"></span></div>
+                <div class="field-row"><span class="dotted"></span></div>
+                <div class="field-row">Contact No: <span class="dotted"></span></div>
+                <div class="field-row">NIC / ID No: <span class="dotted"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkbox-row">
+        <div class="cb-group">
+            <strong>Shipping Line:</strong>
+            <span class="cb-item"><span class="square"></span> CSL</span>
+            <span class="cb-item"><span class="square"></span> Others</span>
+        </div>
+        <div class="cb-group">
+            <strong>Branches:</strong>
+            <span class="cb-item"><span class="square"></span> DXB</span>
+            <span class="cb-item"><span class="square"></span> SHJ</span>
+            <span class="cb-item"><span class="square"></span> AJM</span>
+            <span class="cb-item"><span class="square"></span> UAQ</span>
+            <span class="cb-item"><span class="square"></span> FUJ</span>
+            <span class="cb-item"><span class="square"></span> RAK</span>
+        </div>
+        <div class="cb-group" style="border:none;">
+            <strong>Mode:</strong>
+            <span class="cb-item"><span class="square"></span> Air Freight</span>
+            <span class="cb-item"><span class="square"></span> Sea Freight</span>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">S.NO</th>
+                <th style="width: 45%;">CARGO TYPE & DESCRIPTION</th>
+                <th>L</th>
+                <th>W</th>
+                <th>H</th>
+                <th>VOLUME</th>
+                <th>WEIGHT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>01</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>02</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>03</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>04</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>05</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>06</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>07</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>08</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>09</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+    </table>
+
+    <div class="summary-bar">
+        <div class="sb-item">Box No: <div class="sb-input"></div></div>
+        <div class="sb-item">Box Invoice No: <div class="sb-input"></div></div>
+        <div class="sb-item">Package: <div class="sb-input"></div></div>
+        <div class="sb-item" style="flex: 1.5;">TOTAL VOLUME: <div class="sb-input"></div></div>
+    </div>
+
+    <div class="bottom-layout">
+        <div>
+            <div class="notice-box">
+                <span class="notice-title">IMPORTANT NOTICE:</span>
+                Please be notified that only items for your personal use can be sent as personal effects. 
+                Prohibited items such as Alcohol, Cigarettes or articles in commercial quantities should not be included in your packages. 
+                All items must be declared to Customs at destination. All goods should be cleared within 7 days of arrival or else storage charges will be applicable. 
+                Company is not liable for any damage or loss on transit, unless Marine insurance cover has been requested by the customer. 
+                Any government levies are to the consignee's account.
+            </div>
+
+            <div class="signature-area">
+                <p style="margin-bottom: 30px;">
+                    Shipper's Signature: <br>
+                    <span class="sig-line" style="display:block;"></span>
+                </p>
+                <p>
+                    Sales Person Signature: <br>
+                    <span class="sig-line" style="display:block;"></span>
+                </p>
+            </div>
+            
+            <div class="sinhala-disclaimer" style="margin-top: 10px;">
+                භාණ්ඩ භාර ගැනීමේදී රජයේ රේගු බදු ගෙවීමෙන් පසු භාණ්ඩ පරීක්ෂා කර බාර ගත යුතුය. පසුව කියන ලද්දක් භාරගනු නොලැබේ. 
+                (Goods must be inspected upon collection after paying custom duties.)
+            </div>
+        </div>
+
+        <div>
+            <table class="charges-table" style="border: 2px solid var(--primary-blue);">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">DESCRIPTION OF CHARGES</th>
+                        <th style="text-align: right;">AED</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Document Charges</td>
+                        <td class="amount-col"></td>
+                    </tr>
+                    <tr>
+                        <td>Packing / Crate Charges</td>
+                        <td class="amount-col"></td>
+                    </tr>
+                    <tr>
+                        <td>Transport Charges (Kandy/Col)</td>
+                        <td class="amount-col"></td>
+                    </tr>
+                    <tr>
+                        <td>Box Charges</td>
+                        <td class="amount-col"></td>
+                    </tr>
+                    <tr>
+                        <td>Insurance / Other</td>
+                        <td class="amount-col"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>GRAND TOTAL</td>
+                        <td class="amount-col" style="height: 30px;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        <strong>INTER LANKA CARGO LLC</strong><br>
+        Email: interlankacargo@gmail.com | Web: www.interlankacargo.com<br>
+        <span style="font-size: 8px;">Software Generated Bill</span>
+    </div>
+
+</div>
+
+</body>
+</html>
