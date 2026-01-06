@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inter Lanka Cargo Bill - Blue Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #004080; /* Royal Blue */
+            --light-blue: #f0f4f8;
+            --border-color: #004080;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            font-size: 12px; 
+            margin: 0; 
+            padding: 40px; 
+            background-color: #e6efff; /* Page Background (Screen Only) */
+            display: flex;
+            justify-content: center;
+        }
+
+        /* The Bill Paper */
+        .bill-container {
+            width: 100%;
+            max-width: 800px;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Nice Drop Shadow */
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 100px;
+            color: rgba(0, 64, 128, 0.05); /* Very Faint Blue */
+            font-weight: bold;
+            z-index: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .content { position: relative; z-index: 1; }
+
+        /* Headers */
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--primary-blue); padding-bottom: 15px; margin-bottom: 15px; }
+        
+        .header-left { width: 35%; }
+        .header-left h1 { margin: 0; color: var(--primary-blue); font-size: 28px; text-transform: uppercase; line-height: 1; }
+        .header-left h2 { margin: 5px 0 2px; font-size: 16px; font-family: 'Noto Sans Sinhala', sans-serif; color: #333; }
+        .header-left h3 { margin: 0; font-size: 14px; font-family: 'Noto Sans Tamil', sans-serif; color: #333; }
+        
+        .header-center { text-align: center; font-weight: bold; width: 30%; color: var(--primary-blue); }
+        .logo-icon { font-size: 45px; margin-bottom: 5px; }
+        
+        .header-right { text-align: right; width: 35%; font-size: 11px; color: #444; }
+        .header-right strong { color: var(--primary-blue); }
+        
+        /* Title Bar */
+        .bill-title-bar { 
+            background: var(--primary-blue); 
+            color: white;
+            padding: 8px 15px; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-radius: 4px;
+        }
+        
+        /* Boxes */
+        .box-container { display: flex; gap: 15px; margin-bottom: 15px; }
+        .box { border: 1px solid var(--primary-blue); padding: 0; flex: 1; min-height: 110px; border-radius: 4px; }
+        .box-title { 
+            background: var(--light-blue); 
+            color: var(--primary-blue);
+            font-weight: bold; 
+            padding: 5px 10px;
+            border-bottom: 1px solid var(--primary-blue); 
+            font-size: 11px; 
+            text-transform: uppercase;
+        }
+        .box-content { padding: 10px; }
+        .input-line { border-bottom: 1px dotted #999; display: inline-block; width: 60%; margin-bottom: 2px;}
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        th { background-color: var(--primary-blue); color: white; padding: 8px; font-size: 11px; border: 1px solid var(--primary-blue); }
+        td { border: 1px solid #ccc; padding: 8px; text-align: center; color: #333; }
+        
+        /* Checkboxes */
+        .options-bar { 
+            background: var(--light-blue); 
+            border: 1px dashed var(--primary-blue); 
+            padding: 8px; 
+            margin-bottom: 15px; 
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer { font-size: 11px; margin-top: 30px; border-top: 2px solid var(--primary-blue); padding-top: 15px; text-align: center; color: #555; }
+        .slogan { font-family: 'Noto Sans Sinhala', sans-serif; font-style: italic; font-weight: bold; color: var(--primary-blue); font-size: 16px; margin-bottom: 5px; }
+        
+        /* Payment Section */
+        .payment-table td { text-align: left; padding: 5px; border: none; font-size: 11px;}
+        .payment-table { border: 2px solid var(--primary-blue); border-radius: 4px; overflow: hidden;}
+        .payment-table tr:last-child td { background: var(--primary-blue); color: white; }
+
+        /* Print Settings */
+        @media print {
+            body { background-color: white; padding: 0; }
+            .bill-container { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
+            .bill-title-bar, th, .box-title, .payment-table tr:last-child td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bill-container">
+        <div class="watermark">INTER LANKA</div>
+
+        <div class="content">
+            <div class="header">
+                <div class="header-left">
+                    <h1>INTER LANKA<br>CARGO LLC</h1>
+                    <h2>ඉන්ටලංකා කාගෝ</h2>
+                    <h3>இன்டர் லங்கா கார்கோ</h3>
+                    <p style="margin-top:5px; font-weight:bold; color:#d00;">HOTLINE: 054 578 5585</p>
+                </div>
+                
+                <div class="header-center">
+                    <div class="logo-icon"><img src="#" alt=""></div>
+                    <div>DOOR TO DOOR CARGO<br>SERVICES TO SRI LANKA</div>
+                </div>
+
+                <div class="header-right">
+                    <strong>UAE OFFICE:</strong><br>
+                    HND Abdulghaffar Guloom Husain<br>
+                    Al Khabeesi, Office No: 03<br>
+                    P.O. Box: 135, Dubai, UAE<br>
+                    <div style="margin-top: 8px; line-height: 1.4;">
+                        📞 +971 54 578 5585<br>
+                        📞 +971 50 672 9585<br>
+                        📞 +971 58 882 6683
+                    </div>
+                </div>
+            </div>
+
+            <div class="bill-title-bar">
+                <span>HOUSE BILL OF LADING / BOOKING NOTE</span>
+                <span style="color: #fff;">Date: ........................</span>
+            </div>
+
+            <div class="box-container">
+                <div class="box">
+                    <div class="box-title">SHIPPER DETAILS (Sender)</div>
+                    <div class="box-content">
+                        <p><strong>Name:</strong> <span class="input-line"></span></p>
+                        <p><strong>Mobile:</strong> <span class="input-line"></span></p>
+                        <p><strong>Passport:</strong> <span class="input-line"></span></p>
+                        <p><strong>Remarks:</strong> <span class="input-line"></span></p>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-title">CONSIGNEE DETAILS (Receiver)</div>
+                    <div class="box-content">
+                        <p><strong>Name:</strong> <span class="input-line"></span></p>
+                        <p><strong>Address:</strong> <span class="input-line" style="width:80%"></span><br>
+                        <span class="input-line" style="width:100%"></span></p>
+                        <p><strong>Mobile:</strong> <span class="input-line"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-bar">
+                Mode: &nbsp; &#9744; Air Cargo &nbsp; &#9744; Sea Cargo &nbsp;&nbsp;|&nbsp;&nbsp; 
+                Delivery: &nbsp; &#9744; Door to Door &nbsp; &#9744; Warehouse Collection
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">NO</th>
+                        <th style="width: 40%;">CARGO TYPE & DESCRIPTION</th>
+                        <th>L</th>
+                        <th>W</th>
+                        <th>H</th>
+                        <th>VOLUME</th>
+                        <th>WEIGHT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="height: 30px;"><td>01</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr style="height: 30px;"><td>02</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr style="height: 30px;"><td>03</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr style="height: 30px;"><td>04</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr style="background-color: #f9f9f9;">
+                        <td colspan="5" style="text-align: right; font-weight: bold; color: var(--primary-blue);">TOTAL</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <div style="width: 60%; font-size: 11px;">
+                    <p class="slogan">"නිදහසේ ගෙදර යන්න..."</p>
+                    <p style="font-style: italic;">Received with thanks from customer.</p>
+                    <br><br>
+                    <div style="display: flex; justify-content: space-between; padding-right: 20px;">
+                        <div style="text-align: center; border-top: 1px dashed #000; width: 45%; padding-top: 5px;">Customer Signature</div>
+                        <div style="text-align: center; border-top: 1px dashed #000; width: 45%; padding-top: 5px;">Authorized Signature</div>
+                    </div>
+                </div>
+
+                <div style="width: 35%;">
+                    <table class="payment-table" style="width: 100%; margin-bottom: 0;">
+                        <tr>
+                            <td>Freight Charges</td>
+                            <td style="border-bottom: 1px solid #ccc;"></td>
+                        </tr>
+                        <tr>
+                            <td>Packing / Storage</td>
+                            <td style="border-bottom: 1px solid #ccc;"></td>
+                        </tr>
+                        <tr>
+                            <td>Document / Other</td>
+                            <td style="border-bottom: 1px solid #ccc;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>NET TOTAL (AED)</strong></td>
+                            <td style="font-weight: bold; font-size: 15px;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footer">
+                <strong>INTER LANKA CARGO LLC</strong><br>
+                Al Khabeesi, Office No: 03, P.O. Box: 135, Dubai, UAE<br>
+                Email: interlankacargo@gmail.com
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
